@@ -10,6 +10,8 @@ parser = argparse.ArgumentParser("get core genes from groups.txt")
 
 parser.add_argument("groups_file", type = argparse.FileType("r"),
         nargs = 1, help = "the groups.txt file produced by orthoMCL")
+parser.add_argument("--output", "-o", type = argparse.FileType("w"),
+        nargs = 1, help = "a name for the output file")
 
 args = parser.parse_args()
 
@@ -32,10 +34,15 @@ def readGroups(file_name):
 
 def getCore(groups_dict, genome_names):
     core_clusters = []
+    genome_names = list(genome_names)
     for cluster in groups_dict:
-        if len(groups_dict[cluster]) == len(genome_names):
-            print cluster
+        # create a list of proteins in cluster to check against all genomes
+        protein_list = []
+        for protein in groups_dict[cluster]:
+            protein_list.append(protein.split("|")[0])
+        # check if the cluster contains proteins from all genomes only once (no dups)
+        if sorted(protein_list) == sorted(genome_names):
+            args.output[0].write(cluster + "\t" + "\t".join(groups_dict[cluster]) + "\n")
 
 groups_dict, genome_names = readGroups(args.groups_file)
 core_clusters = getCore(groups_dict, genome_names)
-
