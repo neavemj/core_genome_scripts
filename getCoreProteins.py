@@ -4,6 +4,7 @@
 # input should the output from getCoreGenes.py
 
 import argparse
+import sys
 from Bio import SeqIO
 
 parser = argparse.ArgumentParser("get proteins given a list of core genes")
@@ -14,6 +15,7 @@ parser.add_argument("--proteins", "-p", type = str,
         nargs = 1, help = "the goodProteins.fasta file from orthoMCL")
 
 args = parser.parse_args()
+
 
 def getCoreProteins(core_file, protein_dict):
     for line in core_file:
