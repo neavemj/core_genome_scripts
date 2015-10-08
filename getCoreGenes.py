@@ -17,7 +17,7 @@ args = parser.parse_args()
 
 
 def readGroups(file_name):
-    """ create a dict of cluster and proteins present
+    """ create a dictionary of cluster and proteins present
     also get unique genome names using a set """
     groups_dict = {}
     genome_set = set()
